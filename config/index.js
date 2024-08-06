@@ -1,6 +1,5 @@
 import { createPool } from "mysql2";
 import 'dotenv/config';
-config()
 let connection = createPool({
     host: process.env.hostDb,
     user: process.env.userDb,
@@ -9,8 +8,8 @@ let connection = createPool({
     multipleStatements: true,
     connectionLimit: 30
 })
-connection.on('connect', (err) => {
-    if(err) throw new Error('Couldn\'t connect to the database, please try again later')
+connection.on('connect', (pool) => {
+    if(!pool) throw new Error('Couldn\'t connect to the database, please try again later')
 })
 export {
     connection
