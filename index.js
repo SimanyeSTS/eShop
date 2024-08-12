@@ -1,7 +1,9 @@
 import express from 'express'
 import path from 'path'
 import { connection as db } from './config/index.js'
-
+import { createToken } from './middleware/AuthenticateUser.js'
+import { hash } from 'bcrypt'
+import bodyParser from 'body-parser'
 //Create an Express app
 const app = express()
 const port = +process.env.PORT || 4000
@@ -9,13 +11,14 @@ const router = express.Router()
 
 //Middleware
 app.use(
-router, 
-express.static('./static'), 
-express.json(), 
+router,
+express.static('./static'),
+express.json(),
 express.urlencoded({
     extended: true
 })
 )
+router.use(bodyParser.json())
 
 //End point
 router.get('^/$|/eShop', (req, res) => {
@@ -43,7 +46,6 @@ router.get('/users', (req, res) => {
     }
 })
 
-
 //Make one user display
 router.get('/user/:id', (req, res) => {
     try {
@@ -67,6 +69,70 @@ router.get('/user/:id', (req, res) => {
     }
 })
 
+//Registering a user
+router.post('/register', async(req,res) => {
+    try {
+        let data = req.body
+            data.pwd = await hash(data.pwd, 12 )
+
+            // Payload
+            let user = {
+                emailAdd: data.emailAdd,
+                pwd: data.pwd
+            }
+            let strQry = `INSERT INTO Users
+                SET ?`;
+
+        db.query(strQry,[data], (err) => {
+            if (err) {
+                res.json({
+                   status: res.statusCode,
+                   msg: err
+                })
+            } else {
+                const token = createToken(user)
+                res.json({
+                    token,
+                    msg: 'Successfully registered'
+                })
+            }
+        })
+
+    } catch (e) {
+        console.errow(e)
+        res.status(500).json({
+            msg: 'An error occured during registration'
+        })
+    }
+ })
+
+//Updating a user
+router.patch('/user/:id', async (req, res) => {
+    try {
+        let data = req.body
+        if (data.pwd) {
+            data.pwd = await hash(data.pwd, 12)
+        }
+        const strQry = `
+        UPDATE Users
+        SET ?
+        WHERE userID = ${req.params.id}
+        `
+        db.query(strQry, [data], (err) => {
+            if (err) throw new Error ('Unable to update a user')
+                res.json({
+            status: res.statusCode,
+            msg: 'The user record was updated'
+                });
+        });
+    } catch (e) {
+        res.json({
+            status: 400,
+            msg: e.message,
+        });
+    }
+});
+
 //Specify anything without clear path to throw error
 router.get('*', (req, res) => {
     res.json({
@@ -74,7 +140,10 @@ router.get('*', (req, res) => {
         msg: 'Resource not found'
     })
 })
-
 app.listen(port, () => {
     console.log(`Server is running on port ${port}.`)
 })
+
+
+
+
