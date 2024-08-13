@@ -198,8 +198,6 @@ router.post('/login', (req, res) => {
             msg: e.message
         })
     }
-  
-
 })
 
 //Specify anything without clear path to throw error
