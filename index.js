@@ -4,6 +4,7 @@ import { connection as db } from './config/index.js'
 import { createToken } from './middleware/AuthenticateUser.js'
 import { compare, hash } from 'bcrypt'
 import bodyParser from 'body-parser'
+
 //Create an Express app
 const app = express()
 const port = +process.env.PORT || 4000
@@ -29,7 +30,7 @@ router.get('^/$|/eShop', (req, res) => {
 router.get('/users', (req, res) => {
     try {
         const strQry = `
-        SELECT firstName, lastName, age, emailAdd, pwd
+        SELECT firstName, lastName, age, emailAdd, pwd, userRole, profileURL
         FROM Users;
         `
         db.query(strQry, (err, results) => {
@@ -51,7 +52,7 @@ router.get('/users', (req, res) => {
 router.get('/user/:id', (req, res) => {
     try {
         const strQry = `
-        SELECT userID, firstName, lastName, age, emailAdd
+        SELECT userID, firstName, lastName, age, emailAdd, userRole, profileURL
         FROM Users
         WHERE userID = ${req.params.id};
         `
@@ -160,7 +161,7 @@ router.post('/login', (req, res) => {
     try {
         const { emailAdd, pwd } = req.body
         const strQry = `
-        SELECT userID, firstName, lastName, age, emailAdd, pwd
+        SELECT userID, firstName, lastName, age, emailAdd, pwd, userRole, profileURL
         FROM Users
         WHERE emailAdd = '${emailAdd}';
         `
