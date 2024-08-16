@@ -11,11 +11,11 @@ productRouter.get('/', verifyAToken, (req, res) => {
     products.fetchProducts(req, res)
 })
 
-productRouter.get('/recent', verifyAToken, (req, res) => {
+productRouter.get('/recent', (req, res) => {
     products.fetchProduct(req, res)
 })
 
-productRouter.get('/id:', verifyAToken ,(req, res) => {
+productRouter.get('/:id', verifyAToken ,(req, res) => {
     products.updateProduct(req, res)
 })
 
@@ -23,11 +23,11 @@ productRouter.post('/add', verifyAToken, (req, res) => {
     products.addProduct(req, res)
 })
 
-productRouter.patch('/id:', verifyAToken, (req, res) => {
+productRouter.patch('/:id', verifyAToken, (req, res) => {
     products.updateProduct(req, res)
 })
 
-productRouter.delete('/id:', verifyAToken, (req, res) => {
+productRouter.delete('/:id', verifyAToken, (req, res) => {
     products.deleteProduct(req, res)
 })
 

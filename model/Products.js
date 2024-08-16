@@ -1,14 +1,14 @@
-import { connection } from "../config/index.js";
+import { connection as db } from "../config/index.js";
 
 class Products {
     fetchProducts(req, res) {
         try {
             const strQry = `
-            SELECT productID, prodName, category, prodDescription, prodURL, amount
+            SELECT productID, prodName, category, prodDescription, amount
             FROM Products;
             `
-            db.query(strQry, (err) => {
-                if (err) throw new Error('Unable to ferch all products')
+            db.query(strQry, (err, results) => {
+                if (err) throw new Error('Unable to fetch all products')
                     res.json({
                 status: res.statusCode,
                 results
@@ -21,10 +21,10 @@ class Products {
             })
         }
     }
-    fetchProducts(req, res) {
+    fetchProduct(req, res) {
         try {
             const strQry = `
-            SELECT prodID, prodName, category, prodDescription, prodURL, amount
+            SELECT prodID, prodName, category, prodDescription, amount
             FROM Products
             ORDER BY prodID DESC
             LIMIT 5;
@@ -36,7 +36,7 @@ class Products {
                 results
             })
             })
-        } catch {
+        } catch  (e) {
             res.json({
                 status: 404,
                 msg: e.message
@@ -84,7 +84,7 @@ class Products {
     }
 }
     updateProduct(req, res) {
-        try{
+        try {
         const strQry = `
         UPDATE Products
         SET ?
