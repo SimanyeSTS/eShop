@@ -1,5 +1,4 @@
 import express from 'express'
-import path from 'path'
 import bodyParser from 'body-parser'
 import { users } from '../model/index.js'
 
@@ -22,7 +21,7 @@ userRouter.patch('/user/:id', (req, res) => {
     users.updateUser(req, res)
 })
 
-userRouter.delete('/user/:id', (req, res) => {
+userRouter.delete('/:id', (req, res) => {
     users.deleteUser(req, res)
 })
 
@@ -30,6 +29,7 @@ userRouter.post('/login', (req, res) => {
     users.login(req, res)
 })
 
-export {
-    UserController
+export{
+    express,
+    userRouter
 }

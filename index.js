@@ -1,17 +1,14 @@
 import { userRouter, express } from './controller/UserController.js'
-import { ProductController } from './controller/ProductController.js'
+import { productRouter } from './controller/ProductController.js'
 import path from 'path'
 
 //Create an Express app
 const app = express()
 const port = +process.env.PORT || 4000
-const router = express.Router()
-
 //Middleware
+app.use('/users', userRouter),
+app.use('/products', productRouter)
 app.use(
-router,
-'/user', userRouter,
-'/products', productRouter,
 express.static('./static'),
 express.json(),
 express.urlencoded({
@@ -20,12 +17,12 @@ express.urlencoded({
 )
 
 //End point
-router.get('^/$|/eShop', (req, res) => {
+app.get('^/$|/eShop', (req, res) => {
     res.status(200).sendFile(path.resolve('./static/html/index.html'))
 })
 
 //Specify anything without clear path to throw error
-router.get('*', (req, res) => {
+app.get('*', (req, res) => {
     res.json({
         status: 404,
         msg: 'Resource not found'
