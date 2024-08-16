@@ -10,12 +10,9 @@
 </template>
 
 <script>
-
-    export default {
-            name: "CardComp"
+export default {
+    name: "CardComp"
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
