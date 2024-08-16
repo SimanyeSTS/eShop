@@ -29,3 +29,7 @@ userRouter.delete('/user/:id', (req, res) => {
 userRouter.post('/login', (req, res) => {
     users.login(req, res)
 })
+
+export {
+    UserController
+}
