@@ -1,15 +1,39 @@
 *,
 *::after,
-*::before{
+*::before {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-::-webkit-scrollbar{
+
+/* Custom variables */
+:root {
+    --primary: rgb(0, 0, 0);
+    --secondary: white;
+    --alternative: hsla(100, 13%, 28%, 0.7);
+    --awesome: darkolivegreen;
+    --mainBox-shadow: 0.2rem 0.2rem 0.1rem 0.2rem rgba(105, 96, 96, 0.75);
+    --button-shadow: 0.1rem 0.1rem rgba(105, 96, 96, 0.75);
+    --card-box-shadow: 0.5vw 0.5vw 1vw rgba(90, 115, 132, 0.9);
+    --text-shadow: 0.3rem 0.3rem 0.4rem rgba(78, 107, 91, 0.5);
+    --mainBg: hsla(145, 83%, 20%, 0.39);
+    --bgImg: linear-gradient(to right, var(--awesome), var(--mainBg));
+}
+
+::-webkit-scrollbar {
     display: none;
 }
+
+/* Display - grid */
+:is(#app) {
+    display: grid;
+}
+
+/* Display - flex */
+
 /* APP */
 #app {
+    grid-template-rows: auto minmax(100dvh, 100%) auto;
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -30,15 +54,37 @@ nav a.router-link-exact-active {
     color: #42b983;
 }
 
-/* Logo */
-img[alt='logo']{
-    width: 5rem;
+body {
+    scroll-behavior: smooth;
+}
+
+/* All images */
+img {
     aspect-ratio: 1;
     object-fit: cover;
     object-position: center;
 }
 
-.wrapper{
-    display: grid;
-    grid-template-rows: auto minmax(100dvh, 100%) auto;
+/* Logo */
+img[alt='logo'] {
+    width: 5rem;
 }
+
+/* Login */
+:is(.form-control-wrapper) {  
+    margin-block: .4rem;
+    & button {
+        margin-block: .3rem;
+    }
+}
+
+/* Media query */
+/* width 100% */
+@media screen and (width < 900px) {
+    :is(.form-control-wrapper button) {
+        width: 100%;
+    }
+}
+
+/* With Subgrid,
+we may set the col or row of the inner grid to rely on the parent rows and columns. */
