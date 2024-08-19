@@ -1,12 +1,9 @@
 <template>
-  <div class="wrapper">
-    <NavBar />
-    <main>
-      <router-view />
-    </main>
-    <Footer/>
-  </div>
-
+  <NavBar />
+  <main>
+    <router-view />
+  </main>
+  <Footer/>
 </template>
 <script>
 import NavBar from './components/NavBar.vue'
