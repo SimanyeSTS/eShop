@@ -31,7 +31,8 @@ class Products {
             LIMIT 5;
             `
             db.query(strQry, (err, results) => {
-                if (err) throw new Error('Unable to retrieve recent products')
+                //'Unable to retrieve recent products'
+                if (err) throw new Error(err.message)
                 res.json({
                     status: res.statusCode,
                     results
